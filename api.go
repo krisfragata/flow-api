@@ -1,25 +1,35 @@
 package main
 
 import (
-	// "encoding/json"
-	// "net/http"
-	"time"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-//flow data response
-type flowResponse struct{
-	//status code, usually 200
-	Status int
-	Date_Posted time.Time
-	Date_String string
-	Cfs string
-	Time_Posted string
-	Forecast string
-	Expires string
-	IsRelease bool
+type Server struct {
+	listeningAt string
 }
 
-type Error struct{
-	Code int
-	Message string
+func NewServer(listeningAt string) *Server {
+	return &Server{
+		listeningAt: listeningAt,
+	}
 }
+
+func NotFoundError(w http.ResponseWriter, r *http.Request) {
+	http.Error(w, "404 not found", http.StatusNotFound)
+}
+
+func (s *Server) Run(){
+	router := mux.NewRouter()
+	
+	router.NotFoundHandler = http.HandlerFunc(NotFoundError)
+
+	fmt.Println("Server running on port:", s.listeningAt)
+	log.Fatal(http.ListenAndServe(s.listeningAt, router))
+
+}
+
+
