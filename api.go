@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
 	"github.com/gorilla/mux"
 )
+
 
 type Server struct {
 	listeningAt string
@@ -24,7 +24,7 @@ func NotFoundError(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) Run(){
 	router := mux.NewRouter()
-	
+	router.StrictSlash(false)
 	router.NotFoundHandler = http.HandlerFunc(NotFoundError)
 
 	fmt.Println("Server running on port:", s.listeningAt)
