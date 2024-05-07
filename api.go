@@ -28,7 +28,7 @@ func (s *Server) Run(){
 	router.NotFoundHandler = http.HandlerFunc(NotFoundError)
 
 	fmt.Println("Server running on port:", s.listeningAt)
-	log.Fatal(http.ListenAndServe(s.listeningAt, router))
+	log.Println(http.ListenAndServe(s.listeningAt, router))
 
 }
 
